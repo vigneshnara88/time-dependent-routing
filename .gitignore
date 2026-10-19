@@ -1,0 +1,37 @@
+# Requests, route outputs, datasets, and private exercise materials.
+data/
+outputs/
+private/
+*.json
+*.jsonl
+*.csv
+*.tsv
+*.parquet
+*.pdf
+*.docx
+*.ipynb
+*.zip
+*.log
+*.txt
+!requirements.txt
+
+# Credentials and local configuration.
+.env
+.env.*
+.aws/
+.ssh/
+credentials*
+secrets*
+*.pem
+*.key
+
+# Python and editor artifacts.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
