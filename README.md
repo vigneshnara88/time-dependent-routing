@@ -4,6 +4,22 @@ A Python graph-routing exercise for finding an early arrival when road condition
 
 The distinctive constraint is that a traveller cannot wait at a node. Returning to a node later through a cycle can therefore lead to a different continuation. The solver keeps multiple arrival-time states instead of retaining only one arrival per node.
 
+## The question behind the solver
+
+A shortest route on a map is not always the fastest journey at a particular departure time. A road may slow down, become blocked or recover while the traveller is already moving. The relevant question is therefore: **which sequence of roads gets us to the destination earliest, given when each road will be entered and how its conditions change during traversal?**
+
+The problem becomes especially interesting when waiting at intersections is disallowed. In a conventional shortest-path search, reaching a node earlier often allows later arrivals to be discarded. Here, an early arrival may encounter an entry block, while returning to the same node through a cycle at a later time can permit a different onward route. The solver therefore searches over both location and elapsed time.
+
+This is useful for understanding the assumptions behind routing algorithms. The rules about waiting, direction and when an obstruction affects a journey determine which search states matter; changing those rules changes the problem being solved.
+
+## A road journey as a timeline
+
+Each edge starts with a base traversal duration. Time windows apply speed factors to a particular direction of that edge. The traversal routine tracks how much of the base journey remains and advances through each boundary at which the applicable factor changes.
+
+As an illustration, a road whose unconstrained traversal takes one minute need not take two minutes just because its speed is halved at entry. If the slow window ends partway through the trip, the remaining portion is completed at the restored speed. Conversely, a new obstruction can affect a journey already in progress. Evaluating the condition only at departure would miss these changes.
+
+The implementation distinguishes a blocked entry from a block encountered after entry: the former prevents starting that traversal, while the latter pauses progress on the edge until movement becomes possible. The returned path records the chosen edge sequence, including repeated edges if the selected journey uses a cycle.
+
 ## Interface
 
 The implementation uses only the Python standard library. Its main interface accepts and returns JSON strings:
